@@ -1,0 +1,22 @@
+﻿@page
+@model MyCompany.Website.Pages.MysModel
+@{ ViewData["Title"] = "Our Mys"; }
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card-columns">
+    @foreach (var My in Model.Mys)
+    {
+    <div class="card">
+        <img class="card-img-top" src="@My.ImageUrl" />
+        <div class="card-body">
+            <h5 class="card-title">@My.Name</h5>
+            <p class="card-text">@My.Description</p>
+        </div>
+        <div class="card-footer text-muted">
+            @Html.DisplayFor(model => My.Price)
+        </div>
+    </div>
+    }
+</div>
+
