@@ -40,6 +40,11 @@ jobs:
       - name: Prepare MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
 
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1
+
       - name: Build database project
         working-directory: ./src/MyCompany/MyCompany.Database
         run: MSBuild.exe MyCompany.Database.sqlproj -property:Configuration=Release
