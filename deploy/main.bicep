@@ -20,9 +20,9 @@ param reviewApiUrl string
 param reviewApiKey string
 
 // Define the names for resources.
-var appServiceAppName = 'toy-website-${resourceNameSuffix}'
-var appServicePlanName = 'toy-website'
-var applicationInsightsName = 'toywebsite'
+var appServiceAppName = 'my-website-${resourceNameSuffix}'
+var appServicePlanName = 'my-website'
+var applicationInsightsName = 'mywebsite'
 var storageAccountName = 'mystorage${resourceNameSuffix}'
 
 // Define the SKUs for each component based on the environment type.
@@ -99,4 +99,5 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
   }
 }
 
+output appServiceAppName string = appServiceApp.name
 output appServiceAppHostName string = appServiceApp.properties.defaultHostName

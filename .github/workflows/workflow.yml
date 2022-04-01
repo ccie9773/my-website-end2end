@@ -1,25 +1,28 @@
-name: deploy-toy-website-end-to-end
-concurrency: toy-company
+name: deploy-my-website-end2end
+concurrency: my-company
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - main
   workflow_dispatch:
 
 jobs:
+  # Build the application and database.
+  build:
+    uses: ccie9773/my-website-end2end/.github/workflows/build.yml@main
 
   # Lint the Bicep file.
   lint:
-    uses: YOUR_GITHUB_USERNAME/toy-website-end-to-end/.github/workflows/lint.yml@main
+    uses: ccie9773/my-website-end2end/.github/workflows/lint.yml@main
 
   # Deploy to the test environment.
   deploy-test:
-    uses: YOUR_GITHUB_USERNAME/toy-website-end-to-end/.github/workflows/deploy.yml@main
-    needs: lint
+    uses: ccie9773/my-website-end2end/.github/workflows/deploy.yml@main
+    needs: [build, lint]
     with:
       environmentType: Test
-      resourceGroupName: ToyWebsiteTest
+      resourceGroupName: MyWebsiteTest
       reviewApiUrl: https://sandbox.contoso.com/reviews
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS_TEST }}
@@ -27,11 +30,14 @@ jobs:
 
   # Deploy to the production environment.
   deploy-production:
-    uses: YOUR_GITHUB_USERNAME/toy-website-end-to-end/.github/workflows/deploy.yml@main
-    needs: deploy-test
+    uses: ccie9773/my-website-end2end/.github/workflows/deploy.yml@main
+    needs:
+      - lint
+      - build
+      - deploy-test
     with:
       environmentType: Production
-      resourceGroupName: ToyWebsiteProduction
+      resourceGroupName: MyWebsiteProduction
       reviewApiUrl: https://api.contoso.com/reviews
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS_PRODUCTION }}
