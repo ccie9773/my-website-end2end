@@ -30,3 +30,22 @@ jobs:
         with:
           name: website
           path: ./src/MyCompany/MyCompany.Website/bin/Release/netcoreapp3.1/publish/publish.zip
+
+  build-database:
+    name: Build database
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+
+      - name: Build database project
+        working-directory: ./src/MyCompany/MyCompany.Database
+        run: MSBuild.exe MyCompany.Database.sqlproj -property:Configuration=Release
+
+      - name: Upload website as workflow artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: database
+          path: ./src/MyCompany/MyCompany.Database/bin/Release/MyCompany.Database.dacpac
